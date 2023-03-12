@@ -12,13 +12,7 @@ namespace App;
 
 include_once('./src/utils/debug.php');
 
-if(!empty($_GET['action'])){
-    $action = $_GET['action'];
-} else {
-    $action = null;
-}
-
-dump($_GET);
+$action = $_GET['action'] ?? null;
 
 ?>
 
@@ -50,8 +44,10 @@ dump($_GET);
         <article>
             <?php if ($action === 'create') : ?>
                 <h3>Nowa notatka</h3>
+                <?php echo htmlentities($action) ?>
             <?php else : ?>
                 <h3>Lista notatek</h3>
+                <?php echo htmlentities($action) ?? '' ?>
             <?php endif; ?>
         </article>
     </main>
