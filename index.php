@@ -47,7 +47,7 @@ $action = $_GET['action'] ?? null;
                 <?php echo htmlentities($action) ?>
             <?php else : ?>
                 <h3>Lista notatek</h3>
-                <?php echo htmlentities($action) ?? '' ?>
+                <?php echo htmlentities($action ?? '') ?>
             <?php endif; ?>
         </article>
     </main>
