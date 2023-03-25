@@ -8,6 +8,6 @@ class View
 {
     public function render(?string $page):void
     {
-        include_once('./templates/pages/layout.php');
+        include_once('./templates/layout.php');
     }
 }

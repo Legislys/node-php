@@ -24,13 +24,12 @@
             </ul>
         </nav>
         <article>
-            <?php if ($page === 'create') : ?>
-                <h3>Nowa notatka</h3>
-                <?php echo htmlentities($page) ?>
-            <?php else : ?>
-                <h3>Lista notatek</h3>
-                <?php echo htmlentities($page ?? '') ?>
-            <?php endif; ?>
+            <?php if ($page === 'create') {
+                include_once('./templates/pages/create.php');
+            } else {
+                include_once('./templates/pages/list.php');
+            }
+            ?>
         </article>
     </main>
 </body>
