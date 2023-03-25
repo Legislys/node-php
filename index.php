@@ -19,14 +19,18 @@ include_once('./src/View.php');
 const DEFAULT_ACTION = 'list';
 
 $viewParams = [];
+$created = false;
 $action = $_GET['action'] ?? DEFAULT_ACTION;
 
 if ($action === 'create'){
     $page = 'create';
-    $viewParams[$page] = 'Udało się dodać notatkę!';
+    if (!empty($_POST)){
+        $viewParams = $_POST;
+        $created = true;
+    }
+    $viewParams['created'] = $created;
 } else {
     $page = 'list';
-    $viewParams[$page] = 'Wyświetlamy listę notatek!';
 }
 
 
