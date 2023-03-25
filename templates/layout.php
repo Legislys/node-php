@@ -16,19 +16,16 @@
         <nav>
             <ul class="ul-note">
                 <li class="li-note">
-                    <a href="/">Nowa notatka</a>
+                    <a href="/">Lista notatek</a>
                 </li>
                 <li class="li-note">
-                    <a href="/?action=create">Lista notatek</a>
+                    <a href="/?action=create">Nowa notatka</a>
                 </li>
             </ul>
         </nav>
         <article>
-            <?php if ($page === 'create') {
-                include_once('./templates/pages/create.php');
-            } else {
-                include_once('./templates/pages/list.php');
-            }
+            <?php 
+                require_once("./templates/pages/$page.php")
             ?>
         </article>
     </main>
