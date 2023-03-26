@@ -10,30 +10,8 @@ namespace App;
     require_once - program uruchomi się tylko kiedy dany plik będzie istniał
 */
 
-include_once('./src/utils/debug.php');
+include_once('./src/Controller.php');
 include_once('./src/View.php');
 
-
-const DEFAULT_ACTION = 'list';
-
-$viewParams = [];
-$created = false;
-$action = $_GET['action'] ?? DEFAULT_ACTION;
-
-
-switch ($action){
-    case 'create':
-        $page = 'create';
-        if (!empty($_POST)){
-            $viewParams = $_POST;
-            $created = true;
-        }
-        $viewParams['created'] = $created;
-        break;
-    default: 
-    $page = 'list';
-    break;
-}
-
-$view = new View();
-$view->render($page, $viewParams);
+$controller = new Controller($_GET, $_POST);
+$controller->run();
