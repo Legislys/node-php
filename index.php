@@ -15,3 +15,21 @@ include_once('./src/View.php');
 
 $controller = new Controller($_GET, $_POST);
 $controller->run();
+
+SELECT * FROM `students` WHERE `id` IS NULL
+SELECT 'firstName', 'age' FROM `students` 
+SELECT 'firstName', 'age' FROM `students` WHERE 'age' <> 2 //is not
+
+
+... WHERE 'age' > 21 
+... WHERE 'id' in(1,3)
+
+... ORDER BY 'firstName'  // DEFAULT ascending 
+... ORDER BY 'firstName' DESC //DESCENDING  
+
+... LIMIT 3 
+
+SELECT * FROM `cars` WHERE `brand` = 'Mitsubishi';
+SELECT * FROM `cars` WHERE `brand` <> 'Mitsubishi';
+SELECT * FROM `cars` WHERE `registry number` = 'ZKN802524';
+
