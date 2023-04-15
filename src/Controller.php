@@ -13,12 +13,13 @@ class Controller
     private array $getData;
     private array $postData;
     private static $configuration = [];
+    private Db $database;
 
     public function __construct(array $getData, array $postData)
     {
         $this->getData = $getData;
         $this->postData = $postData;
-        $db = new Db(self::$configuration);
+        $this->database = new Db(self::$configuration);
     }
     public static function initConfig(array $config):void
     {
@@ -38,6 +39,8 @@ class Controller
                 if (!empty($this->postData)){
                     $viewParams = $this->postData;
                     $created = true;
+                    $this->database->createNote($viewParams);
+                    header('Location: /');
                 }
                 $viewParams['created'] = $created;
                 break;
