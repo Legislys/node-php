@@ -3,30 +3,26 @@
 declare(strict_types=1);
 namespace App;
 
+require_once('./Exception/AppException.php');
+require_once('./Exception/StorageException.php');
+require_once('./Exception/ConfigurationException.php');
 include_once('./src/Controller.php');
 include_once('./src/View.php');
 require_once('./config/config.php');
 
-Controller::initConfig($configuration);
-$controller = new Controller($_GET, $_POST);
-$controller->run();
+use App\Exception\AppException;
+use App\Exception\StorageException;
+use App\Exception\ConfigurationException;
+use Throwable;
 
 
-/* SELECT * FROM `students` WHERE `id` IS NULL
-SELECT 'firstName', 'age' FROM `students` 
-SELECT 'firstName', 'age' FROM `students` WHERE 'age' <> 2 //is not
-
-
-... WHERE 'age' > 21 
-... WHERE 'id' in(1,3)
-
-... ORDER BY 'firstName'  // DEFAULT ascending 
-... ORDER BY 'firstName' DESC //DESCENDING  
-
-... LIMIT 3 
-
-SELECT * FROM `cars` WHERE `brand` = 'Mitsubishi';
-SELECT * FROM `cars` WHERE `brand` <> 'Mitsubishi';
-SELECT * FROM `cars` WHERE `registry number` = 'ZKN802524';
-
- */
+try {
+    Controller::initConfig($configuration);
+    $controller = new Controller($_GET, $_POST);
+    $controller->run();
+} catch(AppException $err) {
+    echo '<h1>Wystąpił błąd w aplikacji</h1>';
+    echo '<h3>' . $err->getMessage() . '</h3>';
+} catch (Throwable $err){
+    echo '<h1>Wystąpił błąd w aplikacji!</h1>';
+}
