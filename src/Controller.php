@@ -28,26 +28,25 @@ class Controller
 
     public function run(): void
     {
-        $viewParams = [];
+        $noteData = [];
         $view = new View();
-        $created = false;
 
         switch ($this->action()) {
             case 'create':
                 $page = 'create';
                 if (!empty($this->getRequest('post'))) {
-                    $viewParams = $this->getRequest('post');
-                    $created = true;
-                    $this->database->createNote($viewParams);
-                    header('Location: /');
+                    $noteData = $this->getRequest('post');
+                    $this->database->createNote($noteData);
+                    header('Location: /?before=created');
                 }
-                $viewParams['created'] = $created;
                 break;
             default:
                 $page = 'list';
+                $data = $this->getRequest('get');
+                $viewParams['before'] = $data['before'] ?? null;
                 break;
         }
-        $view->render($page, $viewParams);
+        $view->render($page, $noteData);
     }
     private function action(): string
     {

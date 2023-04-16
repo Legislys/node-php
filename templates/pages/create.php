@@ -1,16 +1,6 @@
-<b>
-    <?php echo $params[$page] ?? '' ?>
 </b>
 <h3>Nowa notatka</h3>
 <div>
-    Tu będzie formularz notatki
-</div>
-<?php if ($params['created']) : ?>
-    <div>
-        <div>Tytuł: <?php echo $params['title'] ?></div>
-        <div>Opis: <?php echo $params['description'] ?></div>
-    </div>
-<?php else : ?>
     <form action="/?action=create" class="note-form" method="post">
         <ul>
             <li>
@@ -26,4 +16,4 @@
             </li>
         </ul>
     </form>
-<?php endif; ?>
+</div>
