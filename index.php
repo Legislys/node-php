@@ -16,10 +16,14 @@ use App\Exception\StorageException;
 use App\Exception\ConfigurationException;
 use Throwable;
 
+$request = [
+    'get' => $_GET,
+    'post' => $_POST
+];
 
 try {
     Controller::initConfig($configuration);
-    $controller = new Controller($_GET, $_POST);
+    $controller = new Controller($request);
     $controller->run();
 } catch (AppException $err) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';

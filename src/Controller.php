@@ -10,15 +10,15 @@ require_once('db.php');
 class Controller
 {
     const DEFAULT_ACTION = 'list';
-    private array $getData;
-    private array $postData;
+    private array $request;
+    private View $view;
     private static $configuration = [];
     private Db $database;
 
-    public function __construct(array $getData, array $postData)
+    public function __construct($request)
     {
-        $this->getData = $getData;
-        $this->postData = $postData;
+        $this->request = $request;
+        $this->view = new View();
         $this->database = new Db(self::$configuration);
     }
     public static function initConfig(array $config): void
@@ -31,13 +31,12 @@ class Controller
         $viewParams = [];
         $view = new View();
         $created = false;
-        $action = $this->getData['action'] ?? self::DEFAULT_ACTION;
 
-        switch ($action) {
+        switch ($this->action()) {
             case 'create':
                 $page = 'create';
-                if (!empty($this->postData)) {
-                    $viewParams = $this->postData;
+                if (!empty($this->getRequest('post'))) {
+                    $viewParams = $this->getRequest('post');
                     $created = true;
                     $this->database->createNote($viewParams);
                     header('Location: /');
@@ -49,5 +48,14 @@ class Controller
                 break;
         }
         $view->render($page, $viewParams);
+    }
+    private function action(): string
+    {
+        $data = $this->getRequest('get');
+        return $data['action'] ?? self::DEFAULT_ACTION;
+    }
+    private function getRequest(string $crud): array
+    {
+        return $this->request[$crud] ?? [];
     }
 }
