@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Exception\NotFoundException;
+
 include_once('./src/View.php');
 require_once('db.php');
 
@@ -40,12 +42,31 @@ class Controller
                     header('Location: /?before=created');
                 }
                 break;
+            case 'show':
+                $page = 'show';
+                $data = $this->getRequest('get');
+                $noteId = (int) $data['id'] ?? null;
+                if (!$noteId) {
+                    header('Location: ?error=noteNotFound');
+                    exit;
+                }
+                try {
+                    $note = $this->database->getNote($noteId);
+                } catch (NotFoundException $err) {
+                    header('Location: ?error=noteNotFound');
+                    exit;
+                }
+                $noteData = [
+                    'note' => $note
+                ];
+                break;
             default:
                 $page = 'list';
                 $data = $this->getRequest('get');
                 $noteData = [
                     'notes' => $this->database->getNotes(),
-                    'before' => $data['before'] ?? null
+                    'before' => $data['before'] ?? null,
+                    'error' => $data['error'] ?? null
                 ];
         }
         $view->render($page, $noteData);

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+require_once('Exception/NotFoundException.php');
+
 use App\Exception\StorageException;
 use App\Exception\ConfigurationException;
+use App\Exception\NotFoundException;
 use PDO;
 use PDOException;
 use Throwable;
@@ -41,14 +44,28 @@ class Db
         try {
             $notes = [];
             $query = 'SELECT id,title,created FROM notes';
-            $result = $this->conn->query($query,PDO::FETCH_ASSOC);
-            foreach($result as $row){
+            $result = $this->conn->query($query, PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
                 $notes[] = $row;
             }
             return $notes;
-        } catch (Throwable $err){
+        } catch (Throwable $err) {
             throw new StorageException('Nie udało się pobrać danych', 500, $err);
         }
+    }
+    public function getNote(int $noteId)
+    {
+        try {
+            $query = "SELECT * FROM notes WHERE id=$noteId";
+            $result = $this->conn->query($query);
+            $note = $result->fetch(PDO::FETCH_ASSOC);
+        } catch (Throwable $err) {
+            throw new StorageException('Notatka o danych id nie istnieje', 400, $err);
+        }
+        if (!$note) {
+            throw new NotFoundException("Notatka o id: $noteId nie istnieje");
+        }
+        return $note;
     }
 
     private function validateConfig(array $config): void
