@@ -36,6 +36,20 @@ class Db
             throw new StorageException('Nie udało się utworzyć notatki', 400, $err);
         }
     }
+    public function getNotes(): array
+    {
+        try {
+            $notes = [];
+            $query = 'SELECT id,title,created FROM notes';
+            $result = $this->conn->query($query,PDO::FETCH_ASSOC);
+            foreach($result as $row){
+                $notes[] = $row;
+            }
+            return $notes;
+        } catch (Throwable $err){
+            throw new StorageException('Nie udało się pobrać danych', 500, $err);
+        }
+    }
 
     private function validateConfig(array $config): void
     {
