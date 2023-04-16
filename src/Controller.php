@@ -7,7 +7,7 @@ namespace App;
 include_once('./src/View.php');
 require_once('db.php');
 
-class Controller 
+class Controller
 {
     const DEFAULT_ACTION = 'list';
     private array $getData;
@@ -21,22 +21,22 @@ class Controller
         $this->postData = $postData;
         $this->database = new Db(self::$configuration);
     }
-    public static function initConfig(array $config):void
+    public static function initConfig(array $config): void
     {
         self::$configuration = $config;
-    } 
+    }
 
-    public function run():void
+    public function run(): void
     {
         $viewParams = [];
         $view = new View();
         $created = false;
         $action = $this->getData['action'] ?? self::DEFAULT_ACTION;
 
-        switch ($action){
+        switch ($action) {
             case 'create':
                 $page = 'create';
-                if (!empty($this->postData)){
+                if (!empty($this->postData)) {
                     $viewParams = $this->postData;
                     $created = true;
                     $this->database->createNote($viewParams);
@@ -44,9 +44,9 @@ class Controller
                 }
                 $viewParams['created'] = $created;
                 break;
-            default: 
-            $page = 'list';
-            break;
+            default:
+                $page = 'list';
+                break;
         }
         $view->render($page, $viewParams);
     }

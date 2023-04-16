@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace App;
 
 require_once('./Exception/AppException.php');
@@ -20,9 +21,9 @@ try {
     Controller::initConfig($configuration);
     $controller = new Controller($_GET, $_POST);
     $controller->run();
-} catch(AppException $err) {
+} catch (AppException $err) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';
     echo '<h3>' . $err->getMessage() . '</h3>';
-} catch (Throwable $err){
+} catch (Throwable $err) {
     echo '<h1>Wystąpił błąd w aplikacji!</h1>';
 }

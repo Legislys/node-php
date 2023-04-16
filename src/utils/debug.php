@@ -1,6 +1,7 @@
 <?php
 
-function dump($params):void{
+function dump($params): void
+{
     echo ('
         <div style="
         display: inline-block;
