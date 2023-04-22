@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App;
 
 use App\Exception\NotFoundException;
+use App\View;
 
-include_once('./src/View.php');
+include_once('src/View.php');
 require_once('db.php');
 
 class Controller
 {
     const DEFAULT_ACTION = 'list';
-    private array $request;
+    private Request $request;
     private View $view;
     private static $configuration = [];
     private Db $database;
 
-    public function __construct($request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
         $this->view = new View();
@@ -31,20 +32,19 @@ class Controller
     public function run(): void
     {
         $noteData = [];
-        $view = new View();
 
         switch ($this->action()) {
             case 'create':
                 $page = 'create';
-                if (!empty($this->getRequest('post'))) {
-                    $noteData = $this->getRequest('post');
+                if ($this->request->hasPost()) {
+                    $noteData = $this->request->getParams('post', []);
                     $this->database->createNote($noteData);
                     header('Location: /?before=created');
                 }
                 break;
             case 'show':
                 $page = 'show';
-                $data = $this->getRequest('get');
+                $data = $this->request->getParams('get', []);
                 $noteId = (int) $data['id'] ?? null;
                 if (!$noteId) {
                     header('Location: ?error=noteNotFound');
@@ -62,22 +62,19 @@ class Controller
                 break;
             default:
                 $page = 'list';
-                $data = $this->getRequest('get');
+                $data = $this->request->getParams('get', []);
                 $noteData = [
                     'notes' => $this->database->getNotes(),
                     'before' => $data['before'] ?? null,
                     'error' => $data['error'] ?? null
                 ];
         }
-        $view->render($page, $noteData);
+        $this->view->render($page, $noteData);
     }
     private function action(): string
     {
-        $data = $this->getRequest('get');
-        return $data['action'] ?? self::DEFAULT_ACTION;
-    }
-    private function getRequest(string $crud): array
-    {
-        return $this->request[$crud] ?? [];
+        $action = $this->request->getParams('get');
+        if (!$action['action'])  return self::DEFAULT_ACTION;
+        return $action['action'];
     }
 }
