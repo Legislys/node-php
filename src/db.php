@@ -33,7 +33,7 @@ class Db
             $description = $this->conn->quote($data['description']);
             $created = date('Y-m d H:i:s');
             $query = "INSERT INTO notes(title,description,created) VALUES($title, $description,'$created')";
-            $result = $this->conn->exec($query);
+            $this->conn->exec($query);
         } catch (Throwable $err) {
             var_dump($err);
             throw new StorageException('Nie udało się utworzyć notatki', 400, $err);
