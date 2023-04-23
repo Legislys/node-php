@@ -71,11 +71,18 @@ class Db
             $title = $data['title'];
             $description = $data['description'];
             $query = "UPDATE notes SET title = '$title', description = '$description' WHERE id = $id";
-            var_dump($title,$description,$query);
-            echo '<br>';
             $this->conn->exec($query);
         } catch (\Throwable $err) {
             throw new StorageException('Nie udało się edytować notatki', 400, $err);
+        }
+    }
+
+    public function deleteNote(int $id){
+        try {
+            $this->conn->exec("DELETE FROM notes WHERE `id` = $id");
+        } catch (\Throwable $err){
+            var_dump($err);
+            throw new StorageException('Nie udało się usunąć notatki', 400, $err);
         }
     }
 
