@@ -12,9 +12,6 @@ include_once('./src/utils/debug.php');
 require_once('./config/config.php');
 
 use App\Exception\AppException;
-use App\Exception\StorageException;
-use App\Exception\ConfigurationException;
-use App\Exception\NotFoundException;
 use App\Controller\AbstractController;
 use App\Controller\NoteController;
 use App\Request;
