@@ -23,12 +23,12 @@ class NoteController extends AbstractController
         $data = $this->request->getParams('get', []);
         $noteId = (int) $data['id'] ?? null;
         if (!$noteId) {
-            $this->redirect('/', ['error', 'missingNoteId']);
+            $this->redirect('/', ['error' => 'missingNoteId']);
         }
         try {
             $note = $this->database->getNote($noteId);
         } catch (NotFoundException $err) {
-            $this->redirect('/', ['error', 'noteNotFound']);
+            $this->redirect('/', ['error' => 'noteNotFound']);
         }
         $this->view->render('show', ['note' => $note]);
     }

@@ -51,7 +51,7 @@ abstract class AbstractController
         if(count($params)){
             $queries = [];
             foreach($params as $key => $value){
-                $queries[] = urlencode($key) . '=' . urlencode($value); 
+                $queries[] = urlencode(strval($key)) . '=' . urlencode(strval($value)); 
             }
             $queries = implode('&', $queries);
         }
