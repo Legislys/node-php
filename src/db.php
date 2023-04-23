@@ -65,6 +65,20 @@ class Db
         return $note;
     }
 
+    public function editNote(int $id, array $data): void
+    {
+        try {
+            $title = $data['title'];
+            $description = $data['description'];
+            $query = "UPDATE notes SET title = '$title', description = '$description' WHERE id = $id";
+            var_dump($title,$description,$query);
+            echo '<br>';
+            $this->conn->exec($query);
+        } catch (\Throwable $err) {
+            throw new StorageException('Nie udało się edytować notatki', 400, $err);
+        }
+    }
+
     private function validateConfig(array $config): void
     {
         if (empty($config['database']) || empty($config['user']) || empty($config['host'])) {
