@@ -28,7 +28,7 @@ class Db
         try {
             $title = $this->conn->quote($data['title']);
             $description = $this->conn->quote($data['description']);
-            $created = date('Y-m d H:i:s');
+            $created = date('Y-m-d H:i:s');
             $query = "INSERT INTO notes(title,description,created) VALUES($title, $description,'$created')";
             $this->conn->exec($query);
         } catch (\Throwable $err) {
