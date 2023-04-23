@@ -46,4 +46,18 @@ abstract class AbstractController
         if (!$action['action'])  return self::DEFAULT_ACTION;
         return $action['action'];
     }
+
+    protected function redirect(string $to, array $params)
+    {
+        $location = $to;
+        if(count($params)){
+            $queries = [];
+            foreach($params as $key => $value){
+                $queries[] = urlencode($key) . '=' . urlencode($value); 
+            }
+            $queries = implode('&', $queries);
+        }
+        header("Location: $location");
+        exit;
+    }
 }
