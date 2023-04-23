@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
-require_once('Exception/NotFoundException.php');
-
 use App\Exception\StorageException;
 use App\Exception\ConfigurationException;
 use App\Exception\NotFoundException;
 use PDO;
 use PDOException;
-use Throwable;
 
 class Db
 {
@@ -34,7 +31,7 @@ class Db
             $created = date('Y-m d H:i:s');
             $query = "INSERT INTO notes(title,description,created) VALUES($title, $description,'$created')";
             $this->conn->exec($query);
-        } catch (Throwable $err) {
+        } catch (\Throwable $err) {
             var_dump($err);
             throw new StorageException('Nie udało się utworzyć notatki', 400, $err);
         }
@@ -49,7 +46,7 @@ class Db
                 $notes[] = $row;
             }
             return $notes;
-        } catch (Throwable $err) {
+        } catch (\Throwable $err) {
             throw new StorageException('Nie udało się pobrać danych', 500, $err);
         }
     }
@@ -59,7 +56,7 @@ class Db
             $query = "SELECT * FROM notes WHERE id=$noteId";
             $result = $this->conn->query($query);
             $note = $result->fetch(PDO::FETCH_ASSOC);
-        } catch (Throwable $err) {
+        } catch (\Throwable $err) {
             throw new StorageException('Notatka o danych id nie istnieje', 400, $err);
         }
         if (!$note) {

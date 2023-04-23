@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Controller;
 
 use App\Exception\NotFoundException;
-
-require_once('./src/AbstractController.php');
 
 class NoteController extends AbstractController
 {
@@ -25,7 +23,7 @@ class NoteController extends AbstractController
         $data = $this->request->getParams('get', []);
         $noteId = (int) $data['id'] ?? null;
         if (!$noteId) {
-            $this->redirect('/', ['error','missingNoteId']);
+            $this->redirect('/', ['error', 'missingNoteId']);
         }
         try {
             $note = $this->database->getNote($noteId);
