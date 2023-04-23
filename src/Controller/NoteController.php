@@ -44,25 +44,24 @@ class NoteController extends AbstractController
     public function editAction()
     {
         if ($this->request->requestMethod() == 'POST') {
-            $noteData = $this->request->getParams('post');
-            if (!$noteData['id']) $this->redirect('/', ['error' => 'missingNoteId']);
+            $noteData = $this->request->getParams('post', []);
+            if (!array_key_exists('id', $noteData)) $this->redirect('/', ['error' => 'missingNoteId']);
             $this->database->editNote((int) $noteData['id'], $noteData);
             $this->redirect('/', ['before' => 'edited']);
         }
-        $noteId = (int) $this->request->getParams('get')['id'];
+        $noteId = (int) $this->request->getParams('get', [])['id'];
         try {
             $note = $this->database->getNote($noteId);
         } catch (\Throwable $err) {
-            $this->redirect('/', ['error' => 'noteNotFound']);
-            exit;
+            return $this->redirect('/', ['error' => 'noteNotFound']);
         }
         $this->view->render('edit', ['note' => $note]);
     }
     public function deleteAction()
     {
-        $noteId = (int) $this->request->getParams('get')['id'];
+        $noteId = (int) $this->request->getParams('get', [])['id'];
         if ($this->request->requestMethod() == 'POST') {
-            $noteId = (int) $this->request->getParams('post')['id'];
+            $noteId = (int) $this->request->getParams('post', [])['id'];
             $this->database->deleteNote($noteId);
             $this->redirect('/', ['before' => 'deleted']);
         }
@@ -72,7 +71,6 @@ class NoteController extends AbstractController
             $note = $this->database->getNote($noteId);
         } catch (\Throwable $err) {
             $this->redirect('/', ['error' => 'noteNotFound']);
-            exit;
         }
         $this->view->render('delete', ['note' => $note]);
     }

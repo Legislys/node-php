@@ -32,7 +32,6 @@ class Db
             $query = "INSERT INTO notes(title,description,created) VALUES($title, $description,'$created')";
             $this->conn->exec($query);
         } catch (\Throwable $err) {
-            var_dump($err);
             throw new StorageException('Nie udało się utworzyć notatki', 400, $err);
         }
     }
@@ -81,7 +80,6 @@ class Db
         try {
             $this->conn->exec("DELETE FROM notes WHERE `id` = $id");
         } catch (\Throwable $err){
-            var_dump($err);
             throw new StorageException('Nie udało się usunąć notatki', 400, $err);
         }
     }
